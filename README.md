@@ -31,7 +31,10 @@ docker run -d -p 27017:27017 --name mongo-offtuc mongo:3.4-jessie
 
 ### Luego:
 ```bash 
-cd fullstack 
+cd fullstack
+
+# Copiar el archivo .env creado en /server a /fullstack 
+cp src/server/.env .
 
 # Instalar dependencias
 npm install
