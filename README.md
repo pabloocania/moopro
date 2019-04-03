@@ -16,10 +16,12 @@ git clone https://github.com/pabloocania/offtuc.git
 
 ### IMPORTANTE! Una vez clonado, crear en el directorio offtuc/fullstack/src/server un archivo .env con el sig contenido:
 ### El archivo .env contiene variables globales y sirven para la configuración del servidor
+````
 NAME=offtuc
 PORT=8080
 HOST=localhost
 SECRETORKEY=offtuc
+`````
 
 ### Correr container de mongodb en docker
 docker run -d -p 27017:27017 --name mongo-offtuc mongo:3.4-jessie
