@@ -1,19 +1,19 @@
-# node_microservice_boilerplate
-Node microservice boilerplate that connects to Eureka Server and Spring Cloud Configuration server
+# server
 
-## before installing:
-1) create a .env file with at least these values:
-NAME=node_microservice_boilerplate
-PORT=3000
-HOST=localhost
+correr container mongodb docker
+```bash
+docker run -d -p 27017:27017 --name mongo-offtuc mongo:3.4-jessie
+```
+con el comando 
+```
+nodemon --inspect index.js 
+```
+la REST API se mostrará disponible después de conectarse con la base de datos Mongo 
 
-## to install run:
-npm install
+para comprobar que este funcionando:
 
-It needs an Eureka Server to connect to
+```
+http://localhost:8080/api/endpoints
+````
 
-## to check the status of the service, you can try with: 
-http://localhost:3000/api/v1/ping
 
-## Example endpoints:
-http://localhost:3000/api/v1/singers/
