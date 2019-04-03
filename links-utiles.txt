@@ -1,0 +1,3 @@
+https://github.com/crsandeep/simple-react-full-stack
+
+docker run --name mongo-offtuc -d mongo:3.4-jessie
