@@ -2,8 +2,11 @@
 ## Project 66 - Proyecto Node, React, Flutter
 
 ### Es necesario instalar docker y npm con Node:
-https://docs.docker.com/docker-for-mac/install/
-https://www.npmjs.com/get-npm
+* https://docs.docker.com/docker-for-mac/install/
+* https://www.npmjs.com/get-npm
+
+y Postman para consultar con la API:
+* https://www.getpostman.com/downloads/
 
 
 ## Instalación
