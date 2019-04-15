@@ -1,30 +1,33 @@
 const LocalStrategy = require("passport-local").Strategy;
-const JwtStrategy = require('passport-jwt').Strategy;
-const { ExtractJwt } = require('passport-jwt');
-const passport = require('passport');
-const User = require("./dbmodels/usuario");
+const JwtStrategy = require("passport-jwt").Strategy;
+const { ExtractJwt } = require("passport-jwt");
+const passport = require("passport");
+const User = require("./dbmodels/user");
 
 const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = process.env.SECRETORKEY;
 
-
 module.exports = () => {
-  passport.use(new LocalStrategy({ usernameField: "email" },
-    ((email, password, done) => {
-      User.findOne({ email },
-        (err, user) => {
-          if (err) { return done(err); }
-          if (!user) { return done(null, false); }
-          user.verifyPassword(password, (err, isMatch) => {
-            if (err) return done(err, null, { message: "Incorrect Password" });
-            if (isMatch) {
-              return done(null, user);
-            }
-            return done(null, false, { message: "Incorrect Password" });
-          });
+  passport.use(
+    new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
+      User.findOne({ email }, (err, user) => {
+        if (err) {
+          return done(err);
+        }
+        if (!user) {
+          return done(null, false);
+        }
+        user.verifyPassword(password, (err, isMatch) => {
+          if (err) return done(err, null, { message: "Incorrect Password" });
+          if (isMatch) {
+            return done(null, user);
+          }
+          return done(null, false, { message: "Incorrect Password" });
         });
-    })));
+      });
+    })
+  );
 
   passport.use(
     new JwtStrategy(opts, (jwtPayload, done) => {
