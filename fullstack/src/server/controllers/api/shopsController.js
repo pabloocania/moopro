@@ -22,6 +22,18 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res, nex
     .catch(error => next(createError(HttpStatus.BAD_REQUEST, error.message)));
 });
 
+// @route GET /api/vX/shops/dto
+// @desc retrieves blank shop DTO
+router.get("/dto", passport.authenticate("jwt", { session: false }), (req, res, next) => {
+  shopsServices
+    .getShopsDTO()
+    .then((shopsDTO) => {
+      if (shopsDTO) res.json(shopsDTO);
+      else next(createError(HttpStatus.NOT_FOUND, "No se encontraron comercios"));
+    })
+    .catch(error => next(createError(HttpStatus.BAD_REQUEST, error.message)));
+});
+
 // @route GET /api/vX/shops/:id
 // @desc retrieves shop by id from the db
 router.get("/:id", passport.authenticate("jwt", { session: false }), (req, res, next) => {

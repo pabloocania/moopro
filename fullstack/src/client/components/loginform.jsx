@@ -64,7 +64,6 @@ class LoginForm extends React.Component {
   };
 
   actualizaUsuario = (user) => {
-    localStorage.setItem("user", JSON.stringify(user));
     this.onLogIn();
   };
 

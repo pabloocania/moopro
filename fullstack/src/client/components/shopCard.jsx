@@ -13,6 +13,7 @@ import {
   withStyles
 } from "@material-ui/core";
 import axios from "axios";
+import Notifier, { showProgress, hideProgress } from "./notifier";
 import Emoji from "./emoji";
 
 const styles = theme => ({
@@ -50,6 +51,7 @@ class ShopCard extends React.Component {
   }
 
   componentDidMount() {
+    showProgress();
     const url = "https://picsum.photos/g/300/200";
     axios
       .get(url, {
@@ -62,6 +64,7 @@ class ShopCard extends React.Component {
           )}`
         });
         this.storeTheImage();
+        hideProgress();
       });
   }
 
@@ -100,11 +103,15 @@ class ShopCard extends React.Component {
             </CardContent>
           </CardActionArea>
           <CardActions>
-            <Button fullWidth="true" size="small" color="secondary" variant="outlined">
+            <Button fullWidth="false" size="small" color="secondary" variant="outlined">
               Ver promociones
+            </Button>
+            <Button fullWidth="false" size="small" color="secondary" variant="outlined">
+              Ver detalles
             </Button>
           </CardActions>
         </Card>
+        <Notifier />
       </Box>
     );
   }

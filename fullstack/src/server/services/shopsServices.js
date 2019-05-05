@@ -70,5 +70,10 @@ module.exports = {
         reject(new Error("id invalido"));
       }
     });
+  },
+  getShopsDTO: function getShopsDTO() {
+    return new Promise((resolve, reject) => {
+      resolve(shopDTO.getShopsDTO());
+    });
   }
 };

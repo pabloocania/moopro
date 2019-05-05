@@ -12,6 +12,8 @@ export default class ApiUsers {
         const user = r.data;
         if (token && user) {
           user.token = token;
+          localStorage.setItem("user", JSON.stringify(user));
+          console.log(user);
           callback(user);
         }
       })

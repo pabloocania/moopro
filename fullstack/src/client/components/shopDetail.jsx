@@ -4,15 +4,19 @@ import {
   Paper,
   Typography,
   withStyles,
-  FormControl,
-  InputLabel,
   InputAdornment,
-  Input,
-  TextField
+  TextField,
+  Button,
+  Divider
 } from "@material-ui/core";
 import PropTypes from "prop-types";
+import classNames from "classnames";
+import SaveIcon from "@material-ui/icons/Save";
 import ProfileImage from "./profileImage";
 import CategoriesPicker from "./categoriesPicker";
+import ApiShops from "../apiServices/apiShops";
+import PlaceAutocomplete from "./placeAutocomplete";
+import Map from "./map";
 
 const { SocialIcon } = require("react-social-icons");
 
@@ -32,6 +36,11 @@ const styles = theme => ({
     padding: theme.spacing.unit * 2,
     color: theme.palette.text.secondary
   },
+  paperLocation: {
+    padding: theme.spacing.unit * 2,
+    color: theme.palette.text.secondary,
+    marginTop: 20
+  },
   fullHeightContainer: {
     height: "100vh"
   },
@@ -44,6 +53,24 @@ const styles = theme => ({
   },
   marginTop5: {
     marginTop: 5
+  },
+  marginTop10: {
+    marginTop: 10
+  },
+  divider: {
+    marginTop: 30,
+    marginBottom: 30,
+    backgroundColor: theme.palette.primary.main
+  },
+  button: {
+    margin: theme.spacing.unit
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit
+  },
+  mapWrap: {
+    width: "100%",
+    height: "100%"
   }
 });
 
@@ -51,10 +78,54 @@ const styles = theme => ({
 class ShopDetail extends React.Component {
   constructor(props) {
     super(props);
+    const { shop } = this.props;
+    this.api = new ApiShops();
+    this.state = {
+      nombre: shop ? shop.nombre : "",
+      telefono: shop ? shop.telefono : "",
+      direccion: shop ? shop.direccion : "",
+      usuario: shop ? shop.usuario : "",
+      whatsapp: shop ? shop.whatsapp : "",
+      facebook: shop ? shop.facebook : "",
+      instagram: shop ? shop.instagram : "",
+      geopoint: shop ? shop.geopoint : { lat: -32.89, lng: -68.83 },
+      twitter: shop ? shop.twitter : "",
+      metadata: null
+    };
   }
 
+  onPlaceSelect = (place) => {
+    this.setState({
+      nombre: place.name,
+      direccion: place.formatted_address,
+      geopoint: place.geopoint,
+      metadata: { rating: place.rating, icon: place.icon }
+    });
+  };
+
+  onChange = ({ target: { name, value } }) => this.setState({
+    [name]: value
+  });
+
+  saveShop = (e) => {
+    e.preventDefault();
+    this.api.saveNewShop({ shop: this.state });
+  };
+
   render() {
-    const { classes } = this.props;
+    const { classes, shop } = this.props;
+    const {
+      nombre,
+      telefono,
+      direccion,
+      usuario,
+      whatsapp,
+      geopoint,
+      facebook,
+      instagram,
+      twitter
+    } = this.state;
+    // console.log(geopoint);
     return (
       <Grid
         className={classes.fullContainer}
@@ -67,29 +138,67 @@ class ShopDetail extends React.Component {
           <Paper className={classes.paper}>
             <ProfileImage />
           </Paper>
+          <Paper className={`${classes.paperLocation}`}>
+            <Typography variant="h5" color="secondary">
+              Ubicación
+            </Typography>
+            <div className={classes.mapWrap}>
+              <Map geopoint={geopoint} />
+            </div>
+          </Paper>
         </Grid>
         <Grid item xs={12} sm={8}>
           <Paper className={classes.paper}>
-            <Typography variant="h3" color="primary">
-              Nombre
-            </Typography>
-            <form noValidate autoComplete="off">
+            {shop ? (
+              ""
+            ) : (
+              <form noValidate autoComplete="off" className={classes.marginTop10}>
+                <Typography variant="h5" color="secondary">
+                  Intenta buscando el comercio
+                </Typography>
+                <Typography variant="body2" color="textPrimary">
+                  En caso de encontrarse, los datos se completarán automáticamente
+                </Typography>
+                <PlaceAutocomplete onPlaceSelect={this.onPlaceSelect} />
+              </form>
+            )}
+            <Divider className={classes.divider} variant="middle" />
+            <form noValidate autoComplete="off" className={classes.marginTop10}>
               <Grid container justify="flex-start" alignItems="flex-start" spacing={8}>
                 <Grid item xs={12} sm={6}>
-                  <TextField placeholder="Nombre PH" label="Nombre LBL" fullWidth />
+                  <TextField
+                    placeholder="Nombre Comercio"
+                    label="Nombre Comercio"
+                    fullWidth
+                    value={nombre}
+                    onChange={this.onChange}
+                    name="nombre"
+                    required
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField label="Telefono" fullWidth />
+                  <TextField
+                    label="Telefono"
+                    fullWidth
+                    placeholder="Telefono"
+                    value={telefono}
+                    onChange={this.onChange}
+                    name="telefono"
+                    required
+                  />
                 </Grid>
               </Grid>
               <Grid container justify="flex-start" alignItems="flex-start" spacing={8}>
                 <Grid item xs={12}>
-                  <TextField label="Direccion" fullWidth />
-                </Grid>
-              </Grid>
-              <Grid container justify="flex-start" alignItems="flex-start" spacing={8}>
-                <Grid item xs={12} sm={6}>
-                  <CategoriesPicker suggestionsStrings={categorias} label="Categorias" />
+                  <TextField
+                    label="Direccion"
+                    placeholder="direccion"
+                    fullWidth
+                    value={direccion}
+                    onChange={this.onChange}
+                    required
+                    name="direccion"
+                  />
                 </Grid>
               </Grid>
               <Grid container justify="flex-start" alignItems="flex-start" spacing={8}>
@@ -115,6 +224,9 @@ class ShopDetail extends React.Component {
                         </InputAdornment>
                       )
                     }}
+                    value={whatsapp}
+                    onChange={this.onChange}
+                    name="whatsapp"
                   />
                 </Grid>
                 <Grid item xs={6} sm={3}>
@@ -129,6 +241,9 @@ class ShopDetail extends React.Component {
                         </InputAdornment>
                       )
                     }}
+                    value={facebook}
+                    onChange={this.onChange}
+                    name="facebook"
                   />
                 </Grid>
                 <Grid item xs={6} sm={3}>
@@ -143,6 +258,9 @@ class ShopDetail extends React.Component {
                         </InputAdornment>
                       )
                     }}
+                    value={instagram}
+                    onChange={this.onChange}
+                    name="instagram"
                   />
                 </Grid>
                 <Grid item xs={6} sm={3}>
@@ -157,7 +275,42 @@ class ShopDetail extends React.Component {
                         </InputAdornment>
                       )
                     }}
+                    value={twitter}
+                    onChange={this.onChange}
+                    name="twitter"
                   />
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                justify="flex-start"
+                alignItems="flex-start"
+                spacing={8}
+                className={classes.marginTop5}
+              >
+                <Grid item xs={12}>
+                  <CategoriesPicker suggestionsStrings={categorias} label="Categorias" />
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                justify="flex-end"
+                alignItems="center"
+                spacing={8}
+                alignContent="center"
+                className={classes.marginTop5}
+              >
+                <Grid item>
+                  <Button
+                    size="medium"
+                    color="secondary"
+                    variant="outlined"
+                    className={classes.marginTop10}
+                    onClick={this.saveShop}
+                  >
+                    <SaveIcon className={classNames(classes.leftIcon, classes.iconSmall)} />
+                    Guardar
+                  </Button>
                 </Grid>
               </Grid>
             </form>
@@ -186,5 +339,4 @@ _id = "",
 ShopDetail.propTypes = {
   classes: PropTypes.object.isRequired
 };
-
 export default withStyles(styles)(ShopDetail);

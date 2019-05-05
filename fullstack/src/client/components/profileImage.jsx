@@ -39,6 +39,10 @@ const styles = theme => ({
 
 // eslint-disable-next-line react/prefer-stateless-function
 class ProfileImage extends React.Component {
+  handleClick = (event) => {
+    console.log(event);
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -46,9 +50,15 @@ class ProfileImage extends React.Component {
         <CardMedia
           className={classes.media}
           title="Imagen del Comercio"
-          image="https://picsum.photos/g/300/300?random"
+          image="https://picsum.photos/g/300/300"
         />
-        <Fab color="secondary" size="small" className={classes.button} aria-label="Editar">
+        <Fab
+          color="secondary"
+          size="small"
+          className={classes.button}
+          aria-label="Editar"
+          onClick={this.handleClick}
+        >
           <EditIcon fontSize="small" />
         </Fab>
       </Card>

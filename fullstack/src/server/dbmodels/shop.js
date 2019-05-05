@@ -22,7 +22,14 @@ const comerciosSchema = new Schema({
     },
     default: categoriaDefault
   },
-  usuario: { type: ObjectId, ref: "usuario" },
+  /*
+  usuario: {
+    type: ObjectId, ref: "usuario", default: null, required: false
+  }, */
+  usuario: {
+    type: String,
+    default: "null"
+  },
   imagenUrl: { type: String, default: "" },
   promociones: [{ type: ObjectId, ref: "promocion" }],
   localidad: { type: String, enum: localidades, default: localidadDefault }

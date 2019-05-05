@@ -6,7 +6,6 @@ import {
 } from "@material-ui/core";
 import Select from "react-select";
 import classNames from "classnames";
-import Animated from "react-select/lib/animated";
 import { emphasize } from "@material-ui/core/styles/colorManipulator";
 import CancelIcon from "@material-ui/icons/Cancel";
 import PropTypes from "prop-types";
@@ -38,7 +37,7 @@ const styles = theme => ({
   },
   placeholder: {
     position: "absolute",
-    left: 2,
+    left: 4,
     fontSize: 16
   },
   paper: {
@@ -72,7 +71,6 @@ function inputComponent({ inputRef, ...props }) {
 }
 
 function Control(props) {
-  console.log(props);
   return (
     <TextField
       fullWidth
@@ -190,8 +188,12 @@ class CategoriesPicker extends React.Component {
           onChange={this.handleChange("multi")}
           isMulti
           textFieldProps={{
-            label
+            label,
+            InputLabelProps: {
+              shrink: true
+            }
           }}
+          hideSelectedOptions="true"
           placeholder=""
         />
       </div>

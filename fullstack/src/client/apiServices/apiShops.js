@@ -26,4 +26,32 @@ export default class ApiShops {
       );
     });
   }
+
+  getShopsDTO() {
+    const getShops = `${this.apiUrl}/dto`;
+    return new Promise((resolve, reject) => {
+      axios.get(getShops, this.requestOptions).then(
+        (result) => {
+          resolve(result.data);
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+  }
+
+  saveNewShop(shop) {
+    const saveNewShop = `${this.apiUrl}/new`;
+    console.log(shop);
+    return new Promise((resolve, reject) => {
+      axios
+        .post(saveNewShop, shop, this.requestOptions)
+        .then(result => console.log(result))
+        .catch(message => console.log(`Error ${message}`));
+    });
+  }
 }
