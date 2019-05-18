@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import posed from "react-pose";
-import { tween } from "popmotion";
 import {
   Card,
   CardActions,
@@ -25,20 +24,6 @@ const styles = theme => ({
   }
 });
 
-const Box = posed.div({
-  hoverable: true,
-  init: {
-    scale: 1,
-    boxShadow: "0px 0px 0px rgba(0,0,0,0)",
-    maxWidth: 350
-  },
-  hover: {
-    scale: 1.02,
-    boxShadow: "0px 5px 10px rgba(0,0,0,0.2)",
-    maxWidth: 350
-  }
-});
-
 class ShopCard extends React.Component {
   constructor(props) {
     super(props);
@@ -51,7 +36,7 @@ class ShopCard extends React.Component {
   }
 
   componentDidMount() {
-    showProgress();
+    // showProgress();
     const url = "https://picsum.photos/g/300/200";
     axios
       .get(url, {
@@ -78,41 +63,41 @@ class ShopCard extends React.Component {
     const { classes } = this.props;
     const imageURL = localStorage.getItem("imageStore") ? localStorage.getItem("imageStore") : "";
     return (
-      <Box className={classes.box} id="boxAnimation">
-        <Card className={classes.card} elevation="1">
-          <CardActionArea>
-            <CardMedia
-              className={classes.media}
-              image={imageURL}
-              src="img"
-              title="Contemplative Reptile"
-            />
-            <CardContent>
-              <Typography variant="h6" noWrap="true">
+      <Card className={classes.card} elevation="1">
+        <CardActionArea>
+          <CardMedia
+            className={classes.media}
+            image={imageURL}
+            src="img"
+            title="Contemplative Reptile"
+          />
+          <CardContent>
+            <Typography variant="h6" noWrap="true">
+              {/**
                 <Emoji symbol="👉" label="Nombre" />
-                {shop.nombre}
-              </Typography>
-              <Typography variant="subtitle2">
-                <Emoji symbol="📞" label="Nombre" />
-                {shop.telefono}
-              </Typography>
-              <Typography variant="body2" noWrap="true">
-                <Emoji symbol="💈" label="Dirección" />
-                {`${shop.direccion} - ${shop.localidad}`}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Button fullWidth="false" size="small" color="secondary" variant="outlined">
-              Ver promociones
-            </Button>
-            <Button fullWidth="false" size="small" color="secondary" variant="outlined">
-              Ver detalles
-            </Button>
-          </CardActions>
-        </Card>
+                */}
+              {shop.name}
+            </Typography>
+            <Typography variant="subtitle2">
+              <Emoji symbol="📞" label="Nombre" />
+              {shop.phone}
+            </Typography>
+            <Typography variant="body2" noWrap="true">
+              <Emoji symbol="💈" label="Dirección" />
+              {`${shop.address} - ${shop.city}`}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <Button fullWidth="false" size="small" color="secondary" variant="outlined">
+            Ver promociones
+          </Button>
+          <Button fullWidth="false" size="small" color="secondary" variant="outlined">
+            Ver detalles
+          </Button>
+        </CardActions>
         <Notifier />
-      </Box>
+      </Card>
     );
   }
 }

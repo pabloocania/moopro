@@ -1,7 +1,6 @@
 import React from "react";
-import {
-  Typography, Grid, Paper, withStyles, Button
-} from "@material-ui/core";
+import { Grid, withStyles } from "@material-ui/core";
+import posed from "react-pose";
 import ApiShops from "../apiServices/apiShops";
 import ShopCard from "./shopCard";
 
@@ -15,6 +14,19 @@ const styles = theme => ({
   }
 });
 
+const Box = posed.div({
+  hoverable: true,
+  init: {
+    scale: 1,
+    boxShadow: "0px 0px 0px rgba(0,0,0,0)",
+    maxWidth: 350
+  },
+  hover: {
+    scale: 1.02,
+    boxShadow: "0px 5px 10px rgba(0,0,0,0.2)",
+    maxWidth: 350
+  }
+});
 class ShopsTable extends React.Component {
   constructor(props) {
     super(props);
@@ -67,7 +79,9 @@ class ShopsTable extends React.Component {
         {shops.length > 0
           ? shops.map(shop => (
             <Grid item xs={6} sm={4}>
-              <ShopCard shop={shop} />
+              <Box id="boxAnimation">
+                <ShopCard shop={shop} />
+              </Box>
             </Grid>
           ))
           : ""}

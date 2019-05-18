@@ -50,8 +50,8 @@ export default class ApiShops {
     return new Promise((resolve, reject) => {
       axios
         .post(saveNewShop, shop, this.requestOptions)
-        .then(result => console.log(result))
-        .catch(message => console.log(`Error ${message}`));
+        .then(result => resolve(result))
+        .catch(error => reject(new Error(error.response.data.message)));
     });
   }
 }

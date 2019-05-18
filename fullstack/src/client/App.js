@@ -17,7 +17,7 @@ function App(props) {
 
   return (
     <MuiThemeProvider theme={MainTheme}>
-      <div>{props.logged ? <Main onLogOut={logOut} /> : <Login onLogIn={logIn} />}</div>
+      <div>{logged ? <Main onLogOut={logOut} /> : <Login onLogIn={logIn} />}</div>
       {/* <div>{logged ? <Main onLogOut={logOut} /> : <Login onLogIn={logIn} />}</div> */}
     </MuiThemeProvider>
   );

@@ -6,7 +6,7 @@ const express = require("express");
 const { categorias, categoriaDefault } = require("../../dtos/categoriasDTO");
 const { getShopsDTO } = require("../../dtos/shopsDTO");
 const { localidades, localidadDefault } = require("../../dtos/localidadesDTO");
-const { getPromocionesDTO } = require("../../dtos/promocionesDTO");
+const { getPromocionesDTO } = require("../../dtos/promosDTO");
 const { diasDeLaSemana, diasDeLaSemanaDefault } = require("../../dtos/diasDeLaSemanaDTO");
 
 const router = express.Router();

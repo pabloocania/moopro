@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core";
 
 const styles = theme => ({
   emoji: {
-    padding: "5px"
+    padding: "0px"
   }
 });
 

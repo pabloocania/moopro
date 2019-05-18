@@ -5,16 +5,16 @@ const { localidades, localidadDefault } = require("../dtos/localidadesDTO");
 const { Schema } = mongoose;
 const { ObjectId } = mongoose.SchemaTypes;
 
-const comerciosSchema = new Schema({
-  nombre: { type: String, required: true, trim: true },
-  direccion: { type: String, required: true },
-  telefono: { type: String, required: true },
-  geolocalizacion: { type: [Number], default: [-26.808285, -65.21759] },
+const shopsSchema = new Schema({
+  name: { type: String, required: true, trim: true },
+  address: { type: String, required: true },
+  phone: { type: String, required: true },
+  geopoint: { type: Object, default: { lat: -26.808285, lng: -65.21759 } },
   facebook: String,
   instagram: String,
   twitter: String,
   whatsapp: String,
-  categorias: {
+  categories: {
     type: [String],
     validate: {
       validator: v => categorias.includes(v[0]),
@@ -26,17 +26,23 @@ const comerciosSchema = new Schema({
   usuario: {
     type: ObjectId, ref: "usuario", default: null, required: false
   }, */
-  usuario: {
+  user: {
     type: String,
     default: "null"
   },
   imagenUrl: { type: String, default: "" },
   promociones: [{ type: ObjectId, ref: "promocion" }],
-  localidad: { type: String, enum: localidades, default: localidadDefault }
+  /*
+  localidad: { type: String, enum: localidades, default: localidadDefault },
+  */
+  city: { type: String, default: "Mendoza" },
+  region: { type: String, default: "Mendoza" },
+  metadata: { type: Object, default: null },
+  placeId: { type: String, default: "" }
 });
 
-comerciosSchema.pre("remove", function (next) {
-  this.model("promocion").deleteMany({ comercioId: this._id }, next);
+shopsSchema.pre("remove", function (next) {
+  this.model("promocion").deleteMany({ shopId: this._id }, next);
   this.model("usuarios").deleteMany({ _id: this.usuario }, next);
 });
 
@@ -51,4 +57,4 @@ comerciosSchema.pre('init', function(next, data) {
 });
 */
 
-module.exports = mongoose.model("comercio", comerciosSchema);
+module.exports = mongoose.model("shop", shopsSchema);

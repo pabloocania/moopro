@@ -10,7 +10,7 @@ const singersController = require("../../../controllers/api/singersController");
 const usersController = require("../../../controllers/api/usersController");
 const shopsController = require("../../../controllers/api/shopsController");
 const dtosController = require("../../../controllers/api/dtosController");
-const promocionesController = require("../../../controllers/api/promocionesController");
+const promosController = require("../../../controllers/api/promosController");
 
 const router = express.Router();
 
@@ -22,6 +22,6 @@ router.use("/singers", singersController);
 router.use("/users", usersController);
 router.use("/shops", shopsController);
 router.use("/dtos", dtosController);
-router.use("/promociones", promocionesController);
+router.use("/promos", promosController);
 
 module.exports = router;

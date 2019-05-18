@@ -1,8 +1,53 @@
 import React from "react";
-import scriptLoader from "react-async-script-loader";
 import { Input, FormControl, InputLabel } from "@material-ui/core";
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import { GoogleApiWrapper } from "google-maps-react";
+
+function getAddressObject(addressComponents) {
+  const ShouldBeComponent = {
+    home: ["street_number"],
+    postal_code: ["postal_code"],
+    street: ["street_address", "route"],
+    region: [
+      "administrative_area_level_1",
+      "administrative_area_level_2",
+      "administrative_area_level_3",
+      "administrative_area_level_4",
+      "administrative_area_level_5"
+    ],
+    city: [
+      "locality",
+      "sublocality",
+      "sublocality_level_1",
+      "sublocality_level_2",
+      "sublocality_level_3",
+      "sublocality_level_4"
+    ],
+    country: ["country"]
+  };
+
+  const address = {
+    home: "",
+    postal_code: "",
+    street: "",
+    region: "",
+    city: "",
+    country: ""
+  };
+  addressComponents.forEach((component) => {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const shouldBe in ShouldBeComponent) {
+      if (ShouldBeComponent[shouldBe].indexOf(component.types[0]) !== -1) {
+        if (shouldBe === "country") {
+          address[shouldBe] = component.short_name;
+        } else {
+          address[shouldBe] = component.long_name;
+        }
+      }
+    }
+  });
+  return address;
+}
 
 class AddressAutocomplete extends React.Component {
   constructor(props) {
@@ -10,6 +55,7 @@ class AddressAutocomplete extends React.Component {
     this.state = {
       address: "",
       formatted_address: "",
+      fullAddress: null,
       icon: "",
       geopoint: null,
       placeId: "",
@@ -54,7 +100,8 @@ class AddressAutocomplete extends React.Component {
             icon: results[0].icon
           });
           geocodeByAddress(address).then((resultsGeocode) => {
-            this.setState({ types: resultsGeocode[0].types });
+            const fullAddress = getAddressObject(resultsGeocode[0].address_components);
+            this.setState({ types: resultsGeocode[0].types, fullAddress });
             getLatLng(resultsGeocode[0])
               .then((latLng) => {
                 this.setState({ geopoint: latLng });
@@ -96,7 +143,7 @@ class AddressAutocomplete extends React.Component {
                 value={this.state.address}
                 label="Direccion o Nombre"
                 {...getInputProps({
-                  placeholder: "Dirección o Nombre",
+                  placeholder: "Dirección o Nombre del comercio",
                   className: "location-search-input"
                 })}
                 id="component-simple"

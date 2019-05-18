@@ -17,6 +17,7 @@ import CategoriesPicker from "./categoriesPicker";
 import ApiShops from "../apiServices/apiShops";
 import PlaceAutocomplete from "./placeAutocomplete";
 import Map from "./map";
+import Notifier, { showProgress, hideProgress, openSnackbar } from "./notifier";
 
 const { SocialIcon } = require("react-social-icons");
 
@@ -81,25 +82,37 @@ class ShopDetail extends React.Component {
     const { shop } = this.props;
     this.api = new ApiShops();
     this.state = {
-      nombre: shop ? shop.nombre : "",
-      telefono: shop ? shop.telefono : "",
-      direccion: shop ? shop.direccion : "",
+      name: shop ? shop.nombre : "",
+      phone: shop ? shop.phone : "",
+      address: shop ? shop.address : "",
       usuario: shop ? shop.usuario : "",
       whatsapp: shop ? shop.whatsapp : "",
       facebook: shop ? shop.facebook : "",
       instagram: shop ? shop.instagram : "",
       geopoint: shop ? shop.geopoint : { lat: -32.89, lng: -68.83 },
       twitter: shop ? shop.twitter : "",
-      metadata: null
+      placeId: shop ? shop.placeId : "",
+      metadata: null,
+      types: [],
+      city: "",
+      region: ""
     };
   }
 
   onPlaceSelect = (place) => {
     this.setState({
-      nombre: place.name,
-      direccion: place.formatted_address,
+      name: place.name,
+      address: `${
+        place.fullAddress.street === ""
+          ? place.formatted_address
+          : `${place.fullAddress.street} ${place.fullAddress.home}`
+      } `,
       geopoint: place.geopoint,
-      metadata: { rating: place.rating, icon: place.icon }
+      metadata: { rating: place.rating, icon: place.icon, types: place.types },
+      types: place.types,
+      city: place.fullAddress.city,
+      region: place.fullAddress.region,
+      placeId: place.placeId
     });
   };
 
@@ -108,37 +121,48 @@ class ShopDetail extends React.Component {
   });
 
   saveShop = (e) => {
+    showProgress();
     e.preventDefault();
-    this.api.saveNewShop({ shop: this.state });
+    console.log(this.state);
+    this.api
+      .saveNewShop({ shop: this.state })
+      .then((shop) => {
+        hideProgress();
+        openSnackbar({ message: "Creado correctamente", variant: "success" });
+        console.log(shop._id);
+      })
+      .catch((error) => {
+        hideProgress();
+        openSnackbar({ message: error.message, variant: "error" });
+      });
   };
 
   render() {
     const { classes, shop } = this.props;
     const {
-      nombre,
-      telefono,
-      direccion,
+      name,
+      phone,
+      address,
+      fullAddress,
       usuario,
       whatsapp,
       geopoint,
       facebook,
       instagram,
+      city,
+      region,
       twitter
     } = this.state;
+    // const addressDisplay = fullAddress.street + " " + fullAddress.home + " - " + fullAddress;
     // console.log(geopoint);
     return (
-      <Grid
-        className={classes.fullContainer}
-        container
-        justify="center"
-        alignItems="stretch"
-        spacing={8}
-      >
+      <Grid container justify="center" alignItems="stretch" spacing={8}>
+        <Notifier />
         <Grid item xs={12} sm={4}>
           <Paper className={classes.paper}>
             <ProfileImage />
           </Paper>
-          <Paper className={`${classes.paperLocation}`}>
+          <Paper className={classes.paperLocation}>
             <Typography variant="h5" color="secondary">
               Ubicación
             </Typography>
@@ -170,9 +194,9 @@ class ShopDetail extends React.Component {
                     placeholder="Nombre Comercio"
                     label="Nombre Comercio"
                     fullWidth
-                    value={nombre}
+                    value={name}
                     onChange={this.onChange}
-                    name="nombre"
+                    name="name"
                     required
                   />
                 </Grid>
@@ -181,23 +205,45 @@ class ShopDetail extends React.Component {
                     label="Telefono"
                     fullWidth
                     placeholder="Telefono"
-                    value={telefono}
+                    value={phone}
                     onChange={this.onChange}
-                    name="telefono"
+                    name="phone"
                     required
                   />
                 </Grid>
               </Grid>
               <Grid container justify="flex-start" alignItems="flex-start" spacing={8}>
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={5}>
                   <TextField
                     label="Direccion"
-                    placeholder="direccion"
+                    placeholder="Direccion"
                     fullWidth
-                    value={direccion}
+                    value={address}
                     onChange={this.onChange}
                     required
-                    name="direccion"
+                    name="address"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    label="Localidad"
+                    placeholder="Localidad"
+                    fullWidth
+                    value={city}
+                    onChange={this.onChange}
+                    required
+                    name="city"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={3}>
+                  <TextField
+                    label="Provincia"
+                    placeholder="Provincia"
+                    fullWidth
+                    value={region}
+                    onChange={this.onChange}
+                    required
+                    name="region"
                   />
                 </Grid>
               </Grid>
@@ -323,7 +369,7 @@ class ShopDetail extends React.Component {
 /*
 _id = "",
     nombre = "",
-    direccion = "",
+    address = "",
     telefono = "",
     geolocalizacion = [],
     facebook = "",

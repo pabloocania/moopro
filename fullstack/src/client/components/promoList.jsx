@@ -3,7 +3,7 @@ import {
   withStyles, List, ListItem, Typography
 } from "@material-ui/core";
 import PromoCard from "./promoCard";
-import Notifier, { showProgress } from "./notifier";
+import Notifier, { showProgress, hideProgress } from "./notifier";
 
 const styles = theme => ({
   margin: {
@@ -18,6 +18,7 @@ class PromoList extends React.Component {
 
   componentDidMount() {
     showProgress();
+    setTimeout(() => hideProgress(), 2000);
   }
 
   render() {

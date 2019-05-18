@@ -6,7 +6,7 @@ const Shop = require("../dbmodels/shop");
 module.exports = {
   newShop: function newShop(shop) {
     return new Promise((resolve, reject) => {
-      Shop.findOne({ nombre: shop.nombre }).then((resultadoFindOne) => {
+      Shop.findOne({ name: shop.name }).then((resultadoFindOne) => {
         if (!resultadoFindOne) {
           const nuevo = new Shop(shop);
           nuevo
@@ -41,10 +41,10 @@ module.exports = {
         .catch(error => reject(new Error(error)));
     });
   },
-  updateShop: function updateShop(id, comercio) {
+  updateShop: function updateShop(id, shop) {
     return new Promise((resolve, reject) => {
       if (mongoose.Types.ObjectId.isValid(id)) {
-        Shop.findOneAndUpdate({ _id: id }, { $set: comercio }, { new: true })
+        Shop.findOneAndUpdate({ _id: id }, { $set: shop }, { new: true })
           .then((docs) => {
             resolve(docs);
           })

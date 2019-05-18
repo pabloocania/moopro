@@ -1,0 +1,20 @@
+{
+  "promos": [
+    {
+      "title": "Title of the Promo",
+      "description": "Description of the promo, with details useful for users",
+      "from": "01/01/2019",
+      "until": "01/02/2019",
+      "active": true,
+      "links": ["https://someexample.link", "https://anotherexample.link"],
+      "keywords": ["useful", "keywords"],
+      "originalValue": 100,
+      "discountValue": 75,
+      "discountPercentage": 25,
+      "shopId": "5ccee70f901fe86ef9405ea6",
+      "generated": 0,
+      "available": 100,
+      "peopleReq": 1
+    }
+  ]
+}

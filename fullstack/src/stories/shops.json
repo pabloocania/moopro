@@ -1,0 +1,29 @@
+{
+  "shops": [
+    {
+      "_id": "5ccee70f901fe86ef9405ea6",
+      "name": "Barijho Beer Garden",
+      "address": "Viamonte 4961 ",
+      "phone": "4265737",
+      "geopoint": {
+        "lat": -32.9905494,
+        "lng": -68.88562680000001
+      },
+      "facebook": "",
+      "instagram": "",
+      "twitter": "",
+      "whatsapp": "",
+      "categories": ["Tiempo Libre"],
+      "user": "null",
+      "city": "Luján de Cuyo",
+      "region": "Mendoza",
+      "imagenUrl": "",
+      "metadata": {
+        "rating": 4.3,
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/bar-71.png",
+        "types": ["bar", "establishment", "point_of_interest"]
+      },
+      "placeId": "ChIJW0konJMKfpYRsAMHM98TbQk"
+    }
+  ]
+}
