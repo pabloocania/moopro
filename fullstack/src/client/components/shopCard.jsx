@@ -21,6 +21,9 @@ const styles = theme => ({
   },
   media: {
     height: 140
+  },
+  content: {
+    textAlign: "left"
   }
 });
 
@@ -63,7 +66,7 @@ class ShopCard extends React.Component {
     const { classes } = this.props;
     const imageURL = localStorage.getItem("imageStore") ? localStorage.getItem("imageStore") : "";
     return (
-      <Card className={classes.card} elevation="1">
+      <Card className={classes.card} elevation={1}>
         <CardActionArea>
           <CardMedia
             className={classes.media}
@@ -71,8 +74,8 @@ class ShopCard extends React.Component {
             src="img"
             title="Contemplative Reptile"
           />
-          <CardContent>
-            <Typography variant="h6" noWrap="true">
+          <CardContent className={classes.content}>
+            <Typography variant="h6" noWrap>
               {/**
                 <Emoji symbol="👉" label="Nombre" />
                 */}
@@ -82,17 +85,17 @@ class ShopCard extends React.Component {
               <Emoji symbol="📞" label="Nombre" />
               {shop.phone}
             </Typography>
-            <Typography variant="body2" noWrap="true">
+            <Typography variant="body2" noWrap>
               <Emoji symbol="💈" label="Dirección" />
               {`${shop.address} - ${shop.city}`}
             </Typography>
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button fullWidth="false" size="small" color="secondary" variant="outlined">
+          <Button size="small" color="secondary" variant="outlined">
             Ver promociones
           </Button>
-          <Button fullWidth="false" size="small" color="secondary" variant="outlined">
+          <Button size="small" color="secondary" variant="outlined">
             Ver detalles
           </Button>
         </CardActions>

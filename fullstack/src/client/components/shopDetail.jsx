@@ -180,7 +180,7 @@ class ShopDetail extends React.Component {
                 <Typography variant="h5" color="secondary">
                   Intenta buscando el comercio
                 </Typography>
-                <Typography variant="body2" color="textPrimary">
+                <Typography variant="subtitle2" color="textPrimary">
                   En caso de encontrarse, los datos se completarán automáticamente
                 </Typography>
                 <PlaceAutocomplete onPlaceSelect={this.onPlaceSelect} />

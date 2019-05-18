@@ -5,5 +5,26 @@ const palette = {
   secondary: { main: "#7CB342" }
 };
 const themeName = "Texas Rose Sushi Grey Atlantic Seal";
+const typography = {
+  useNextVariants: true
+};
 
-export default createMuiTheme({ palette, themeName });
+const overrides = {
+  MuiTypography: {
+    // Name of the component ⚛️ / style sheet
+    // Name of the rule
+    subtitle2: {
+      fontSize: 13,
+      fontWeight: 600 // Some CSS
+    },
+    h5: {
+      fontWeight: 600
+    }
+  }
+};
+export default createMuiTheme({
+  palette,
+  overrides,
+  themeName,
+  typography
+});

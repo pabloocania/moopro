@@ -97,22 +97,18 @@ function MediaControlCard(props) {
                 <Typography variant="subtitle1" color="textPrimary">
                   Detalles de la promoción. Fecha/s de validez. Mas información sobre la promo.
                 </Typography>
-                <Typography variant="body2" color="textPrimary">
-                  📅Dia de Validez
-                </Typography>
+                <Typography variant="subtitle2">📅Dia de Validez</Typography>
               </div>
               <div className={classes.quantityWrapper}>
                 <div>
-                  <Typography variant="body2" color="textPrimary">
+                  <Typography variant="subtitle2">
                     Personas:
                     <Emoji symbol="😎" alt="Personas requeridas" />
                     <Emoji symbol="😎" alt="Personas requeridas" />
                     <Emoji symbol="😎" alt="Personas requeridas" />
                   </Typography>
                 </div>
-                <Typography variant="body2" color="textPrimary">
-                  Cant disponibles: 1⃣0⃣0⃣
-                </Typography>
+                <Typography variant="subtitle2">Cant disponibles: 1⃣0⃣0⃣</Typography>
                 <Typography component="h5" variant="h5" className={classes.originalValue}>
                   <Emoji symbol="💰" alt="Precio Inicial" />
                   200

@@ -151,7 +151,7 @@ class PromoDetail extends React.Component {
         <Notifier />
         <Grid item xs={12} sm={4} className={classes.promoImageContainer}>
           <Paper className={classes.withPadding}>
-            <Typography variant="body2" color="textPrimary" align="left">
+            <Typography variant="subtitle2" color="textPrimary" align="left">
               Imagen de la promo:
             </Typography>
             <ProfileImage />
@@ -166,7 +166,7 @@ class PromoDetail extends React.Component {
             */}
           </Paper>
           <Paper className={classes.paperShop}>
-            <Typography variant="body2" color="textPrimary" align="left">
+            <Typography variant="subtitle2" color="textPrimary" align="left">
               Esta promoción pertenece al comercio:
             </Typography>
             <ShopCard shop={shop} />
@@ -177,7 +177,7 @@ class PromoDetail extends React.Component {
             <Typography variant="h5" color="secondary">
               Edición de promoción
             </Typography>
-            <Typography variant="body2" color="textPrimary">
+            <Typography variant="subtitle2">
               Por favor, complete todos los campos posibles a continuación.
             </Typography>
             <Grid container>
