@@ -21,6 +21,7 @@ import CustomDatePicker from "../client/components/customDatePicker";
 import Notifier, { openSnackbar, showProgress, hideProgress } from "../client/components/notifier";
 import PromoDetail from "../client/components/promoDetail";
 import KeywordsInput from "../client/components/keywordsInput";
+import SocialLoginForm from "../client/components/socialLoginForm";
 import { shops } from "./shops.json";
 import { promos } from "./promos.json";
 
@@ -38,9 +39,14 @@ const categorias = [
 const shop = shops[0];
 const promo = promos[0];
 
+const onLogIn = () => {
+  window.alert(`Login successful. Token: ${localStorage.getItem('user')}`);
+};
+
 storiesOf("Comercios", module)
   .addDecorator(muiTheme(MainTheme))
-  .add("Login Form", () => <LoginForm />)
+  .add("Login Form", () => <LoginForm onLogIn={onLogIn} />)
+  .add("Social Login Form", () => <SocialLoginForm onLogIn={onLogIn}/>)
   .add("Shops Table", () => <ShopsTable />)
   .add("Shop Card", () => (
     <div style={{ width: "30%" }}>

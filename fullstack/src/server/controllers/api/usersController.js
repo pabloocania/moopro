@@ -29,6 +29,15 @@ router.get("/currentuser", passport.authenticate("jwt", { session: false }), (re
   res.json(req.user);
 });
 
+// @route GET /api/vX/users/sociallogin
+// @desc Return current user
+// @access Private
+router.post(
+  "/sociallogin",
+  passport.authenticate("local", { session: false }),
+  usersService.socialLogin
+);
+
 // @route GET /api/vX/users/
 // @desc Get all users from DB
 // @access Private

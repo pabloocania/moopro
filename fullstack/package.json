@@ -56,6 +56,8 @@
     "react-avatar-editor": "^11.0.7",
     "react-chartist": "0.13.3",
     "react-dom": "^16.8.6",
+    "react-facebook-login": "^4.1.1",
+    "react-google-login": "^5.0.4",
     "react-google-maps": "9.4.5",
     "react-image": "^2.1.1",
     "react-places-autocomplete": "^7.2.1",

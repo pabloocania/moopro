@@ -11,7 +11,10 @@ import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import ApiUsers from "../apiServices/apiUsers";
-import Login from "../layouts/login";
+import SocialLoginForm from "./socialLoginForm";
+import RegisterDialog from "./registerDialog";
+import { openSnackbar } from "./notifier";
+import { ValidateEmail, ValidatePassword } from "../_helpers/validator";
 
 const styles = theme => ({
   main: {
@@ -50,7 +53,8 @@ class LoginForm extends React.Component {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      openRegisterDialog: false
     };
     this.api = new ApiUsers();
     this.onLogIn = props.onLogIn;
@@ -58,21 +62,42 @@ class LoginForm extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    console.log(e);
     const { email, password } = this.state;
-    this.api.loginUserService(email, password, this.actualizaUsuario);
-  };
-
-  actualizaUsuario = (user) => {
-    this.onLogIn();
+    if (ValidateEmail(email) && ValidatePassword(password)) {
+      this.api
+        .loginUserService(email, password, this.actualizaUsuario)
+        .then(() => this.onLogIn())
+        .catch((message) => {
+          openSnackbar({ message: "Los datos ingresados son incorrectos", variant: "error" });
+          console.log(`${message} Login Error`);
+        });
+    } else {
+      openSnackbar({ message: "Los datos ingresados son incorrectos", variant: "error" });
+    }
   };
 
   onChange = ({ target: { name, value } }) => this.setState({
     [name]: value
   });
 
+  onSocialRegisterConfirm = () => {
+    this.onCloseRegisterDialog();
+    this.onLogIn();
+  };
+
+  onRegisterClick = (e) => {
+    const openModal = true;
+    this.setState({ openRegisterDialog: openModal });
+  };
+
+  onCloseRegisterDialog = () => {
+    const closeModal = false;
+    this.setState({ openRegisterDialog: closeModal });
+  };
+
   render() {
-    const { classes } = this.props;
+    const { classes, onLogIn } = this.props;
+    const { openRegisterDialog, email, password } = this.state;
     return (
       <main className={classes.main}>
         <CssBaseline />
@@ -90,7 +115,7 @@ class LoginForm extends React.Component {
                 id="email"
                 name="email"
                 autoComplete="email"
-                value={this.state.email}
+                value={email}
                 defaultValue=""
                 onChange={this.onChange}
                 autoFocus
@@ -103,7 +128,7 @@ class LoginForm extends React.Component {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                value={this.state.password}
+                value={password}
                 onChange={this.onChange}
                 defaultValue=""
               />
@@ -117,8 +142,18 @@ class LoginForm extends React.Component {
             >
               Log in
             </Button>
+            <SocialLoginForm onLogIn={onLogIn} />
+            <Button fullWidth variant="outlined" color="secondary" onClick={this.onRegisterClick}>
+              Registrarme
+            </Button>
           </form>
         </Paper>
+        <RegisterDialog
+          open={openRegisterDialog}
+          onRegister={this.onSocialRegisterConfirm}
+          onClose={this.onCloseRegisterDialog}
+          onLogIn={onLogIn}
+        />
       </main>
     );
   }

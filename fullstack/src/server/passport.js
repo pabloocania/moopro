@@ -18,6 +18,9 @@ module.exports = () => {
         if (!user) {
           return done(null, false);
         }
+        if (user.socialUser) {
+          return done(null, user);
+        }
         user.verifyPassword(password, (err, isMatch) => {
           if (err) return done(err, null, { message: "Incorrect Password" });
           if (isMatch) {

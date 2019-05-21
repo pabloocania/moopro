@@ -1,4 +1,6 @@
 const bcrypt = require("bcryptjs");
+const HttpStatus = require("http-status-codes");
+const createError = require("http-errors");
 const User = require("../dbmodels/user");
 // Load input validation
 // const validateRegisterInput = require("../../utils/validation/register");
@@ -14,7 +16,16 @@ module.exports = {
     };
     next();
   },
-  register: (req, res) => {
+  socialLogin: (req, res, next) => {
+    if (!req.user) {
+      return res.send(401, "User Not Authenticated");
+    }
+    req.auth = {
+      id: req.user.id
+    };
+    next();
+  },
+  register: (req, res, next) => {
     // Form validation
     // const { errors, isValid } = validateRegisterInput(req.body);
     // Check validation
@@ -22,19 +33,21 @@ module.exports = {
     //  return res.status(400).json(errors);
     // }
     // Check if the user was already created
+    console.log(req.body.email);
     User.findOne({ email: req.body.email })
       // eslint-disable-next-line consistent-return
       .then((user) => {
         if (user) {
-          return res.status(400).json({ error: "Email already exists" });
+          const errorMsg = "Email already exists";
+          return next(createError(HttpStatus.BAD_REQUEST, errorMsg));
         }
         // create the new user with the request body parameters
         const newUser = new User({
           name: req.body.name,
           email: req.body.email,
           password: req.body.password,
-
-          rol: req.body.rol
+          socialUser: req.body.socialUser ? req.body.socialUser : null,
+          rol: req.body.rol ? req.body.rol : "user"
         });
         // Hash password before saving in database
         bcrypt
