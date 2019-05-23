@@ -15,7 +15,7 @@ y Postman para consultar con la API:
 Clonar repositorio en la carpeta deseada
 
 ````
-git clone https://github.com/pabloocania/offtuc.git
+git clone https://github.com/pabloocania/moopro.git
 ````
 
 ### IMPORTANTE! Una vez clonado, crear en el directorio offtuc/fullstack/src/server un archivo .env con el sig contenido:
