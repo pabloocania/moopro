@@ -1,5 +1,6 @@
-# offtuc
-## Project 66 - Proyecto Node, React, Flutter
+# MooPro
+## Promociones cooperativas y sociales
+## Project 66 - Proyecto Node, React, React-Native
 
 ### Es necesario instalar docker y npm con Node:
 * https://docs.docker.com/docker-for-mac/install/
