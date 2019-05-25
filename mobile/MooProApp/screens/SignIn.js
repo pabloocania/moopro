@@ -4,6 +4,8 @@ import {
   View, Text, StyleSheet, TextInput, Button
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { LoginManager } from 'react-native-fbsdk';
+import FacebookLoginRN from '../components/FacebookLoginRN';
 
 import { goHome } from '../navigation';
 import { USER_KEY } from '../config';
@@ -11,9 +13,20 @@ import { USER_KEY } from '../config';
 export default class SignIn extends React.Component {
   state = {
     username: '',
-    password: ''
+    password: '',
+    token: null
   };
 
+  /*
+    componentDidMount() {
+      const token = this.state;
+      if (!token) {
+        LoginManager.logOut();
+      } else {
+        goHome();
+      }
+    }
+  */
   onChangeText = (key, value) => {
     this.setState({ [key]: value });
   };
@@ -29,6 +42,11 @@ export default class SignIn extends React.Component {
       console.log('error:', err);
     }
   };
+
+  onSignInFacebookFinished = (token) => {
+    this.setState({ token });
+    goHome();
+  }
 
   render() {
     return (
@@ -50,6 +68,8 @@ export default class SignIn extends React.Component {
           onChangeText={val => this.onChangeText('password', val)}
         />
         <Button title="Sign In" onPress={this.signIn} />
+        <Text>Or using your social networks</Text>
+        <FacebookLoginRN onSignInFinished={this.onSignInFacebookFinished} />
       </View>
     );
   }

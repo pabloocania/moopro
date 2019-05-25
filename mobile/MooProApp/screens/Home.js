@@ -4,9 +4,11 @@ import {
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
+import facebookService from "../services/FacebookService";
 import { goToAuth } from '../navigation';
 
 import { USER_KEY } from '../config';
+import Profile from '../components/Profile';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,6 +24,24 @@ const styles = StyleSheet.create({
 });
 
 export default class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null,
+      fbProfile: null
+    };
+  }
+
+  componentDidMount() {
+    if (!this.state.fbProfile) {
+      facebookService.fetchProfile().then((profile) => {
+        this.setState({ fbProfile: profile });
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+  }
+
   static get options() {
     return {
       topBar: {
@@ -33,6 +53,7 @@ export default class Home extends React.Component {
   }
 
   logout = async () => {
+    this.setState({ fbProfile: null, user: null });
     AsyncStorage.removeItem(USER_KEY)
       .then(() => goToAuth())
       .catch(err => console.log('error signing out...: ', err));
@@ -47,7 +68,8 @@ export default class Home extends React.Component {
           onPress={() => {
             Navigation.push(this.props.componentId, {
               component: {
-                name: 'User'
+                name: 'User',
+                passProps: { profile: this.state.fbProfile }
               }
             });
           }}
